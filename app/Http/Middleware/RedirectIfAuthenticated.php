@@ -17,6 +17,8 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $redirectTo = "/home";
+
         if ($guard === "admin") {
             $redirectTo = "/admin/home";
         }
