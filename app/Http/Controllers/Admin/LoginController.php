@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -26,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/admin/home';
 
     /**
      * Create a new controller instance.
@@ -35,20 +36,25 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:user')->except('logout');
-	}
-	/** 以下追記 **/
-	public function showLoginForm()
-	{
-		return view('auth.login');
-	}
-	protected function guard()
-	{
-		return \Auth::guard('user');
-	}
-	public function logout(Request $request)
-	{
-		\Auth::guard('user')->logout();
-		return redirect('/login');
-	}
+        $this->middleware('guest:admin')->except('logout');
+    }
+
+    public function showLoginForm()
+    {
+        return view('admin.login');
+    }
+
+    public function guard()
+    {
+        return Auth::guard('admin');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
+        $request->session()->flush();
+        $request->session()->regenerate();
+        return redirect('/admin/login');
+    }
 }
+
