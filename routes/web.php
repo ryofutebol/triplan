@@ -15,6 +15,7 @@ Route::get('/', 'ItemController@index')->name('item.index');
 Route::get('/detail/{id}', 'ItemController@detail')->name('item.detail');
 
 Route::group(['prefix' => 'admin'], function() {
+	Route::get('/', function() { return redirect('/admin/home'); });
 	Route::get('/login', 'Admin\LoginController@showLoginForm')->name('admin.login');
 	Route::post('login', 'Admin\LoginController@login');
 });
