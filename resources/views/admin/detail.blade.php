@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -20,9 +20,11 @@
 				</strong>
 				</p>
 				<div>
-				<a href="{{ route('item.index') }}">一覧に戻る</a>
+				<a href="{{ route('admin.edit') }}">編集</a>
 				</div>
-                </div>
+				<div>
+				<a href="{{ route('admin.home') }}">一覧に戻る</a>
+				</div>
             </div>
         </div>
     </div>

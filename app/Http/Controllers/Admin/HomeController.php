@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Item;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+		$items = Item::get();
+        return view('admin.home', compact('items'));
+    }
+
+    public function detail($id)
+    {
+		$item = Item::findOrFail($id);
+        return view('admin.detail', compact('item'));
+    }
+
+    public function add()
+    {
+        return view('admin.add');
+    }
+
+    public function edit()
+    {
+        return view('admin.edit');
     }
 }
 
