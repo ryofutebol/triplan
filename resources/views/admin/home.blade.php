@@ -6,6 +6,10 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
 				<div class="panel-heading">Admin</div>
+				{{-- フラッシュメッセージの表示 --}}
+				@if (session('message'))
+					<div class="alert alert-success">{{ session('message') }}</div>
+				@endif
 				<h1>商品の一覧</h1>
 				<h3>
 					<a href="{{ route('admin.add') }}">商品追加</a>

@@ -21,10 +21,11 @@ Route::group(['prefix' => 'admin'], function() {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
-	Route::get('/home', 'Admin\HomeController@index')->name('admin.home');
-	Route::get('/detail/{id}', 'Admin\HomeController@detail')->name('admin.detail');
-	Route::get('/add', 'Admin\HomeController@add')->name('admin.add');
-	Route::get('/edit/', 'Admin\HomeController@edit')->name('admin.edit');
+	Route::get('/home', 'Admin\ItemController@index')->name('admin.home');
+	Route::post('/home', 'Admin\ItemController@create')->name('admin.home');//DB保存
+	Route::get('item/add', 'Admin\ItemController@add')->name('admin.add');//追加form
+	Route::get('item/detail/{id}', 'Admin\ItemController@detail')->name('admin.detail');
+	Route::get('item/edit', 'Admin\ItemController@edit')->name('admin.edit');
 	Route::post('logout', 'Admin\LoginController@logout')->name('admin.logout');
 });
 Auth::routes();
