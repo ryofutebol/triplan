@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-				<h1>商品追加</h1>
+				<h2>商品追加</h2>
 				<form method="post" action="{{ route('admin.home') }}">
 					{{ csrf_field() }} {{-- CSRFトークンを記述 --}}
 					<div>
@@ -14,7 +14,7 @@
 					</div>
 					<div>
 						<label>商品説明：</label>
-						<textarea name="description" rows="2" cols="40" required></textarea>
+						<textarea name="description" rows="3" cols="50" required></textarea>
 					</div>
 					<div>
 						<label>価格：</label>
@@ -28,7 +28,6 @@
 					<div><input type="submit" value="登録"></div>
 				</form>
 				<a href="{{ route('admin.home') }}">一覧に戻る</a>
-                </div>
             </div>
         </div>
     </div>

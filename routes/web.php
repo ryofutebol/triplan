@@ -21,11 +21,16 @@ Route::group(['prefix' => 'admin'], function() {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
-	Route::get('/home', 'Admin\ItemController@index')->name('admin.home');
-	Route::post('/home', 'Admin\ItemController@create')->name('admin.home');//DB保存
+	Route::get('home', 'Admin\ItemController@index')->name('admin.home');
+	//新規作成
+	Route::post('home', 'Admin\ItemController@create')->name('admin.home');//DB保存
 	Route::get('item/add', 'Admin\ItemController@add')->name('admin.add');//追加form
-	Route::get('item/detail/{id}', 'Admin\ItemController@detail')->name('admin.detail');
-	Route::get('item/edit', 'Admin\ItemController@edit')->name('admin.edit');
+
+	Route::get('item/detail/{id}', 'Admin\ItemController@detail')->name('admin.detail');//商品詳細
+	//編集
+	Route::get('item/edit', 'Admin\ItemController@edit')->name('admin.edit');//編集form
+	Route::post('item/edit', 'Admin\ItemController@update')->name('admin.edit');//編集情報保存
+
 	Route::post('logout', 'Admin\LoginController@logout')->name('admin.logout');
 });
 Auth::routes();
