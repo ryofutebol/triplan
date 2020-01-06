@@ -10,6 +10,7 @@
 					<div class="alert alert-success">{{ session('message') }}</div>
 				@endif
 				<h1>商品詳細</h1>
+				<input type="hidden" name="id" value="{{ $item->id }}">
 				<h2>{{ $item->name }}</h2>
 				<p>【商品説明】</p>
 				<p>{{ $item->description }}</p>
@@ -24,7 +25,8 @@
 				</strong>
 				</p>
 				<div>
-				<a href="{{ route('admin.edit') }}">編集</a>
+				<a href="{{ route('admin.edit', $item->id) }}">編集</a>
+				{{-- item/edit/{id}を指定 --}}
 				</div>
 				<div>
 				<a href="{{ route('admin.home') }}">一覧に戻る</a>

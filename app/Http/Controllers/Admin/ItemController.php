@@ -25,15 +25,14 @@ class ItemController extends Controller
      */
 	public function index()
 	{
-		session(['id' => '']);//sessionの初期化
 		$items = Item::get();
 		return view('admin.home', compact('items'));
 	}
 
 	public function detail($id)
 	{
-		session(['id' => $id]);//getパラメータの{id}をセッションに保存
 		$item = Item::findOrFail($id);
+		//該当するレコードが見つからない場合にエラー
 		return view('admin.detail', compact('item'));
 	}
 
@@ -46,30 +45,39 @@ class ItemController extends Controller
 	public function create(Request $request)
 	//formを受け取った後の処理 DB保存
 	{
-		$name = $request->input('name');
+		$name = $request->name;
 		$description = $request->description;
-		$price = $request->input('price');
-		$stock = $request->input('stock');
-		$item = Item::create(compact('name', 'description', 'price', 'stock'));
+		$price = $request->price;
+		$stock = $request->stock;
+		$validatedData = $request->validate([
+			'name' => 'required',
+			'description' => 'required',
+			'price' => 'required|numeric|min:0',//数値が0以上である
+			'stock' => 'required|numeric|min:0',//数値が0以上である
+		]);
+		$item = Item::create(compact('name', 'description', 'price', 'stock'));//インスタンスの作成→属性の代入→データの保を一気に行う
 		return redirect(route('admin.home'))->with('message', '商品を追加しました。');
 	}
 
-	public function edit()
+	public function edit($id)
 	//編集フォーム表示
 	{
-		$id = session('id');//sessionに保存したdetailのidを取得
 		$item = Item::findOrFail($id);//入力フォームに現在のデータを表示するために取得
 		return view('admin.edit', compact('item'));
 	}
 
-	public function update(Request $request)
+	public function update(Request $request, $id)//パラメータからid取得
 	//情報編集したものをDB保存
 	{
-		$id = session('id');
+		$validatedData = $request->validate([
+			'name' => 'required',
+			'description' => 'required',
+			'stock' => 'required|numeric|min:0',//数値が0以上である
+		]);
 		$item = Item::findOrFail($id);
-		$item->fill(['name' => $request->input('name')]);
+		$item->fill(['name' => $request->name]);
 		$item->fill(['description' => $request->description]);
-		$item->fill(['stock' => $request->input('stock')]);
+		$item->fill(['stock' => $request->stock]);
 		$item->save();
 
 		$detail_route = route('admin.detail', ['id' => $id]);//編集した商品のrouteを取得

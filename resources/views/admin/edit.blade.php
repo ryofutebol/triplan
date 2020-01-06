@@ -2,11 +2,22 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 				<h2>商品情報編集</h2>
-				<form method="post" action="{{ route('admin.edit') }}">
+				{{-- エラーメッセージ表示 --}}
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+				<form method="post" action="{{ route('admin.edit', $item->id) }}">
+				{{-- item/edit/{id}を指定 --}}
 					{{ csrf_field() }} {{-- CSRFトークンを記述 --}}
 					<div>
 						<label>商品名：</label>
@@ -24,9 +35,8 @@
 				</form>
 				<a href="{{ route('admin.home') }}">一覧に戻る</a>
 				</div>
-                </div>
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection

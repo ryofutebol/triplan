@@ -16,7 +16,7 @@ Route::get('/detail/{id}', 'ItemController@detail')->name('item.detail');
 
 Route::group(['prefix' => 'admin'], function() {
 	Route::get('/', function() { return redirect('/admin/home'); });
-	Route::get('/login', 'Admin\LoginController@showLoginForm')->name('admin.login');
+	Route::get('login', 'Admin\LoginController@showLoginForm')->name('admin.login');
 	Route::post('login', 'Admin\LoginController@login');
 });
 
@@ -28,8 +28,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
 
 	Route::get('item/detail/{id}', 'Admin\ItemController@detail')->name('admin.detail');//商品詳細
 	//編集
-	Route::get('item/edit', 'Admin\ItemController@edit')->name('admin.edit');//編集form
-	Route::post('item/edit', 'Admin\ItemController@update')->name('admin.edit');//編集情報保存
+	Route::get('item/edit/{id}', 'Admin\ItemController@edit')->name('admin.edit');//編集form
+	Route::post('item/edit/{id}', 'Admin\ItemController@update')->name('admin.edit');//編集情報保存
 
 	Route::post('logout', 'Admin\LoginController@logout')->name('admin.logout');
 });
