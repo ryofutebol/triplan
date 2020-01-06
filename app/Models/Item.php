@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-	//use SoftDeletes;
+	//データ挿入を許可するカラムを指定
+	protected $fillable = ['name', 'description', 'price',  'stock'];
 
-	//protected $dates = ['deleted_at'];
+	//使用するテーブルを指定
+	protected $table = 'items';
 }
