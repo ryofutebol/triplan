@@ -11,4 +11,10 @@ class Item extends Model
 
 	//使用するテーブルを指定
 	protected $table = 'items';
+
+	public function carts()
+	{
+		return $this->belongsTo('App\Models\Cart');
+	}
+
 }
