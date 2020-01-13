@@ -10,15 +10,17 @@
 				<p>【商品説明】</p>
 				<p>{{ $item->description }}</p>
 				<h3>価格：¥{{ number_format($item->price) }}</h3>
-				<p>在庫の有無：
-				<strong>
-				@if ($item->stock >= 1)
-				有り
-				@else
-				無し
-				@endif
-				</strong>
-				</p>
+				@auth('user')
+					@if ($item->stock >= 1)
+						<a href="{{ route('cart.add', ['item_id' => $item->id]) }}"><button>カートに追加</button></a>
+						</form>
+					@else
+						<strong>在庫なし</strong>
+					@endif
+				@endauth
+				@guest
+					<strong>ログインしてください</strong>
+				@endguest
 				<div>
 				<a href="{{ route('item.index') }}">一覧に戻る</a>
 				</div>

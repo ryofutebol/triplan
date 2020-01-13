@@ -13,7 +13,13 @@
 
 Route::get('/', 'ItemController@index')->name('item.index');
 Route::get('/detail/{id}', 'ItemController@detail')->name('item.detail');
-Route::get('/cart', 'CartController@cart')->name('cart.index');
+
+Route::group(['middleware' => 'auth:user'], function() {
+	Route::get('/cart', 'CartController@cart')->name('cart.index');
+	Route::get('/cart/delete', 'CartController@delete')->name('cart.delete');
+	Route::get('/cart/add', 'CartController@add')->name('cart.add');
+	Route::post('/cart/add', 'CartController@add')->name('cart.add');
+});
 
 Route::group(['prefix' => 'admin'], function() {
 	Route::get('/', function() { return redirect('/admin/home'); });

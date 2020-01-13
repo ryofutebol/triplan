@@ -12,7 +12,8 @@
 						<h4>{{ $cart->item->name }}</h4>
 						<p>数量：{{ $cart->count }}</p>
 						<p>価格：{{ number_format($cart->item->price * $cart->count) }}円</p>
-						<input type="submit" value="削除">
+						{{-- idを渡し対象レコードを判断 --}}
+						<a href="{{ route('cart.delete', ['id' => $cart->id]) }}"><button>削除</button></a>
 					</div>
 					@endforeach
 					<h3>合計金額：{{ $count }} 円</h3>
