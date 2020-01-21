@@ -6,8 +6,12 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
 				<h1>カート一覧</h1>
+				{{-- フラッシュメッセージの表示 --}}
+				@if (session('message'))
+					<div class="alert alert-success">{{ session('message') }}</div>
+				@endif
 				@if ($count)
-					@foreach ($carts as $cart)
+					@foreach ($carts as $id => $cart)
 					<div class="panel panel-default">
 						<h4>{{ $cart->item->name }}</h4>
 						<p>数量：{{ $cart->count }}</p>

@@ -58,6 +58,9 @@
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
+                                        <a href="{{ route('cart.index') }}">
+                                            カート一覧
+                                        </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
