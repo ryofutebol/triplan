@@ -11,16 +11,16 @@
 					<div class="alert alert-success">{{ session('message') }}</div>
 				@endif
 				@if ($count)
-					@foreach ($carts as $id => $cart)
+					@foreach ($carts as $cart)
 					<div class="panel panel-default">
 						<h4>{{ $cart->item->name }}</h4>
 						<p>数量：{{ $cart->count }}</p>
-						<p>価格：{{ number_format($cart->item->price * $cart->count) }}円</p>
+						<p>価格：{{ number_format($cart->subtotal) }}円</p>
 						{{-- idを渡し対象レコードを判断 --}}
 						<a href="{{ route('cart.delete', ['id' => $cart->id]) }}"><button>削除</button></a>
 					</div>
 					@endforeach
-					<h3>合計金額：{{ $count }} 円</h3>
+					<h3>合計金額：{{ $total }} 円</h3>
 				@else
 					<h2>カートが空です</h2>
 				@endif

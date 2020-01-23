@@ -11,7 +11,7 @@ class Cart extends Model
 
 	protected $dates = ['deleted_at'];//削除したら自動で日付入る
 
-	protected $fillable = ['user_id', 'item_id', 'count'];
+	protected $fillable = ['user_id', 'item_id', 'count', 'subtotal'];
 
 	public function user()
 	{
