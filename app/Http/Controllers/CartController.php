@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Cart;
-use App\User;
 
 class CartController extends Controller
 {
@@ -19,14 +18,22 @@ class CartController extends Controller
 
 	public function cart()
 	{
+		//ログインユーザーのid取得
 		$id = Auth::id();
-		//ログインユーザーのcartsテーブルのuser_id取得
 		//deleted_atがNULLの場合のみ取得
-		$carts = Cart::where('user_id', $id)->whereNull('deleted_at')->get();
+		$carts = Cart::where('user_id', $id)
+			->whereNull('deleted_at')
+			->get();
+
 		//ユーザーがカートに入れている個数取得
-		$count = Cart::where('user_id', $id)->whereNull('deleted_at')->count();
+		$count = Cart::where('user_id', $id)
+			->whereNull('deleted_at')
+			->count();
+
 		//subtotalの合計
-		$total = Cart::where('user_id', $id)->whereNull('deleted_at')->sum('subtotal');
+		$total = Cart::where('user_id', $id)
+			->whereNull('deleted_at')
+			->sum('subtotal');
 		return view('cart.index',  compact('carts', 'count', 'total'));
 	}
 
@@ -35,7 +42,7 @@ class CartController extends Controller
 		//渡されたidを取得して対象レコードをソフトデリート
 		$delete = Cart::find($request->id);
 		$delete->delete();
-		return redirect()->route('cart.index');
+		return redirect()->route('cart.index')->with('d_message', '商品をカートから削除しました');
 	}
 
 	public function add(Request $request)
@@ -46,15 +53,26 @@ class CartController extends Controller
 		$stock = Item::where('id', $item_id)->select('stock')->first();
 		$price = Item::where('id', $item_id)->select('price')->first();
 		$subtotal = $price->price * $count;
+		$carts = Cart::where('user_id', $user_id)
+			->where('item_id', $item_id)
+			->whereNull('deleted_at')
+			->first();
 
-		$carts = Cart::where('user_id', $user_id)->where('item_id', $item_id)->whereNull('deleted_at')->first();
 		if ($carts) {
-			$item = Cart::where('user_id', $user_id)->where('item_id', $item_id)->increment('count', $request->count);
+			//追加されたcountを増やす
+			$item_count = Cart::where('user_id', $user_id)
+				->where('item_id', $item_id)
+				->increment('count', $request->count);
+			//追加されたsubtotalを増やす
+			$upd_subtotal = Cart::where('user_id', $user_id)
+				->where('item_id', $item_id)
+				->increment('subtotal', $subtotal);
+			//追加されたcountをItemテーブルのstockから減らす
 			$stock = Item::where('id', $item_id)->decrement('stock', $request->count);
 		} else {
 			$item = Cart::create(compact('user_id', 'item_id', 'count', 'subtotal'));
 		}
-		return redirect(route('cart.index'))->with('message', '商品をカートに追加しました');
+		return redirect(route('cart.index'))->with('s_message', '商品をカートに追加しました');
 
 	}
 

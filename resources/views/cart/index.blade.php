@@ -2,13 +2,15 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-default">
 				<h1>カート一覧</h1>
 				{{-- フラッシュメッセージの表示 --}}
-				@if (session('message'))
-					<div class="alert alert-success">{{ session('message') }}</div>
+				@if (session('s_message'))
+					<div class="alert alert-success">{{ session('s_message') }}</div>
+				@elseif (session('d_message'))
+					<div class="alert alert-danger">{{ session('d_message') }}</div>
 				@endif
 				@if ($count)
 					@foreach ($carts as $cart)
@@ -25,10 +27,10 @@
 					<h2>カートが空です</h2>
 				@endif
 				<div>
-				<a href="{{ route('item.index') }}">一覧に戻る</a>
+					<a href="{{ route('item.index') }}">一覧に戻る</a>
 				</div>
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
