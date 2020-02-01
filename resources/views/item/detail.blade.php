@@ -6,6 +6,16 @@
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 				<h1>商品詳細</h1>
+				{{-- エラーメッセージ表示 --}}
+				@if ($errors->any())
+					<div class="alert alert-danger">
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
 				<h2>{{ $item->name }}</h2>
 				<p>【商品説明】</p>
 				<p>{{ $item->description }}</p>
