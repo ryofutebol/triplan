@@ -15,7 +15,9 @@
 				@if ($count)
 					@foreach ($carts as $cart)
 					<div class="panel panel-default">
-						<h4>{{ $cart->item->name }}</h4>
+						<a href="{{ route('item.detail', ['id' => $cart->item->id]) }}">
+							<h4>{{ $cart->item->name }}</h4>
+						</a>
 						<p>数量：{{ $cart->count }}</p>
 						<p>価格：{{ number_format($cart->subtotal) }}円</p>
 						{{-- idを渡し対象レコードを判断 --}}

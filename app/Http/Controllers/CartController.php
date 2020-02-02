@@ -31,18 +31,26 @@ class CartController extends Controller
 			->whereNull('deleted_at')
 			->count();
 
-		//subtotalの合計
+		//合計金額
 		$total = Cart::where('user_id', $id)
 			->whereNull('deleted_at')
 			->sum('subtotal');
-		return view('cart.index',  compact('carts', 'count', 'total'));
+		return view('cart.index', compact('carts', 'count', 'total'));
 	}
 
 	public function delete(Request $request)
 	{
+		$user_id = Auth::id();
+		//渡されたcartsのIDからuser_id取得
+		$cart_user_id = Cart::where('id', $request->id)->select('user_id')->first();
 		//渡されたidを取得して対象レコードをソフトデリート
 		$delete = Cart::find($request->id);
-		$delete->delete();
+		//ログインユーザーとカートユーザーのチェック
+		if ($user_id === $cart_user_id->user_id) {
+			$delete->delete();
+		} else {
+			return redirect()->route('cart.index')->with('d_message', 'ユーザーを確認してください');
+		}
 		return redirect()->route('cart.index')->with('d_message', '商品をカートから削除しました');
 	}
 
@@ -54,20 +62,19 @@ class CartController extends Controller
 		$stock = Item::where('id', $item_id)->select('stock')->first();//追加されたitemの在庫数
 		$price = Item::where('id', $item_id)->select('price')->first();//追加されたitemの価格
 		$subtotal = $price->price * $count;//小計
-		$stock = $stock->stock;
 		$valdatedData = $request->validate([
-			'count' => "integer|min:1|max:{$stock}",
+			'count' => "integer|min:1|max:{$stock->stock}",
 		], [
 			'count.max' => '在庫数以上は選択できません',
 		]);
 
-			$item = Cart::firstOrCreate([
-				'user_id' => $user_id,
-				'item_id' => $item_id
-			], [
-				'count' => $count,
-				'subtotal' => $subtotal
-			]);
+		$item = Cart::firstOrCreate([
+			'user_id' => $user_id,
+			'item_id' => $item_id
+		], [
+			'count' => $count,
+			'subtotal' => $subtotal
+		]);
 		DB::transaction(function () use ($request, $item, $subtotal) {
 			//追加された個数を在庫数から減少
 			Item::where('id', $request->item_id)->decrement('stock', $request->count);
@@ -76,27 +83,7 @@ class CartController extends Controller
 				$item->increment('subtotal', $subtotal);
 			}
 		});
-
-		//if ($item) {
-		//	$item_count = $item->increment('count', $count);
-		//	$item_subtotal = $item->increment('subtotal', $subtotal);
-		//}
-		//if ($carts) {
-		//	//追加されたcountを増やす
-		//	$item_count = Cart::where('user_id', $user_id)
-		//		->where('item_id', $item_id)
-		//		->increment('count', $request->count);
-		//	//追加されたsubtotalを増やす
-		//	$upd_subtotal = Cart::where('user_id', $user_id)
-		//		->where('item_id', $item_id)
-		//		->increment('subtotal', $subtotal);
-		//	//追加されたcountをItemテーブルのstockから減らす
-		//	$stock = Item::where('id', $item_id)->decrement('stock', $request->count);
-		//} else {
-		//	$item = Cart::create(compact('user_id', 'item_id', 'count', 'subtotal'));
-		//}
 		return redirect(route('cart.index'))->with('s_message', '商品をカートに追加しました');
-
 	}
 
 }
