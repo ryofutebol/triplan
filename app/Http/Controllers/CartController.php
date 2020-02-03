@@ -19,30 +19,18 @@ class CartController extends Controller
 
 	public function cart()
 	{
-		//ログインユーザーのid取得
-		$id = Auth::id();
-		//deleted_atがNULLの場合のみ取得
-		$carts = Cart::where('user_id', $id)
-			->whereNull('deleted_at')
-			->get();
-
+		$carts = (new Cart)->getCart();
 		//ユーザーがカートに入れている個数取得
-		$count = Cart::where('user_id', $id)
-			->whereNull('deleted_at')
-			->count();
-
+		$count = $carts->count();
 		//合計金額
-		$total = Cart::where('user_id', $id)
-			->whereNull('deleted_at')
-			->sum('subtotal');
+		$total = $carts->sum('subtotal');
 		return view('cart.index', compact('carts', 'count', 'total'));
 	}
 
 	public function delete(Request $request)
 	{
+		$cart_user_id = (new Cart)->findUser($request);
 		$user_id = Auth::id();
-		//渡されたcartsのIDからuser_id取得
-		$cart_user_id = Cart::where('id', $request->id)->select('user_id')->first();
 		//渡されたidを取得して対象レコードをソフトデリート
 		$delete = Cart::find($request->id);
 		//ログインユーザーとカートユーザーのチェック
@@ -56,31 +44,29 @@ class CartController extends Controller
 
 	public function add(Request $request)
 	{
+		$item = (new Cart)->findItem($request);
 		$user_id = Auth::id();//ログインユーザーID
-		$item_id = $request->item_id;//追加されたitemのID
 		$count = $request->count;//追加されたitemの個数
-		$stock = Item::where('id', $item_id)->select('stock')->first();//追加されたitemの在庫数
-		$price = Item::where('id', $item_id)->select('price')->first();//追加されたitemの価格
-		$subtotal = $price->price * $count;//小計
+		$subtotal = $item->price * $count;//小計
 		$valdatedData = $request->validate([
-			'count' => "integer|min:1|max:{$stock->stock}",
+			'count' => "integer|min:1|max:{$item->stock}",
 		], [
 			'count.max' => '在庫数以上は選択できません',
 		]);
 
-		$item = Cart::firstOrCreate([
+		$cart_item = Cart::firstOrCreate([
 			'user_id' => $user_id,
-			'item_id' => $item_id
+			'item_id' => $item->id
 		], [
 			'count' => $count,
 			'subtotal' => $subtotal
 		]);
-		DB::transaction(function () use ($request, $item, $subtotal) {
+		DB::transaction(function () use ($request, $cart_item, $item,  $subtotal) {
 			//追加された個数を在庫数から減少
-			Item::where('id', $request->item_id)->decrement('stock', $request->count);
-			if ($item->wasRecentlyCreated == false) {//レコードが作成されたかのチェック
-				$item->increment('count', $request->count);
-				$item->increment('subtotal', $subtotal);
+			$item->decrement('stock', $request->count);
+			if ($cart_item->wasRecentlyCreated == false) {//レコードが作成されたかのチェック
+				$cart_item->increment('count', $request->count);
+				$cart_item->increment('subtotal', $subtotal);
 			}
 		});
 		return redirect(route('cart.index'))->with('s_message', '商品をカートに追加しました');

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Cart extends Model
 {
@@ -23,4 +24,22 @@ class Cart extends Model
 		return $this->belongsTo('App\Models\Item');
 	}
 
+	public function getCart()
+	{
+		$id = Auth::id();
+		$carts = Cart::where('user_id', $id)->get();
+		return $carts;
+	}
+
+	public function findUser($request)
+	{
+		$cart_user_id = Cart::where('id', $request->id)->first();
+		return $cart_user_id;
+	}
+	public function findItem($request)
+	{
+		$item_id = $request->item_id;//追加されたitemのID
+		$item = Item::where('id', $item_id)->first();
+		return $item;
+	}
 }
