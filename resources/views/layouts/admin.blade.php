@@ -12,7 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>body{background-color: tomato;}</style>
+    <!-- <style>body{background-color: skyblue;}</style> -->
 </head>
 <body>
     <div id="app">

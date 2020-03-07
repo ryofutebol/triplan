@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<h2>商品情報編集</h2>
+				<h2>プラン情報編集</h2>
 				{{-- エラーメッセージ表示 --}}
 				@if ($errors->any())
 					<div class="alert alert-danger">
@@ -19,19 +19,36 @@
 				<form method="post" action="{{ route('admin.edit', $item->id) }}">
 				{{-- item/edit/{id}を指定 --}}
 					{{ csrf_field() }} {{-- CSRFトークンを記述 --}}
-					<div>
-						<label>商品名：</label>
-						<input type="text" name="name" value="{{ $item->name }}" required>
+					<div class="form-group">
+						<label>プラン名</label>
+						<input type="text" name="plan_name" class="form-control">
 					</div>
-					<div>
-						<label>商品説明：</label>
-						<textarea name="description" rows="3" cols="50" required>{{ $item->description }}</textarea>
+					<div class="form-group">
+						<label>県名</label>
+						<input type="text" name="prefecture" class="form-control">
 					</div>
-					<div>
+					<div class="form-group">
+						<label>プランナー</label>
+						<input type="text" name="planner" class="form-control">
+					</div>
+					<div class="form-group">
+						<label>コメント</label>
+						<textarea name="comment" rows="3" cols="50" class="form-control"></textarea>
+					</div>
+					<div class="form-group">
+						<label>在住歴</label>
+						<input type="number" name="residence_history" class="form-control">
+					</div>
+					<div class="form-group">
 						<label>在庫数</label>
-						<input type="number" name="stock" value="{{ $item->stock }}" required>
+						<input type="number" name="stock" class="form-control">
 					</div>
-					<div><input type="submit" value="編集"></div>
+					<div class="form-group">
+						<label>料金</label>
+						<input type="number" name="price" class="form-control">
+						円
+					</div>
+					<button type="submit" class="btn btn-primary">編集</button>
 				</form>
 				<a href="{{ route('admin.home') }}">一覧に戻る</a>
 				</div>

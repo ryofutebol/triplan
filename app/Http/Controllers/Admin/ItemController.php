@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\planRequest;
 use App\Models\Item;
 
 class ItemController extends Controller
@@ -42,21 +43,17 @@ class ItemController extends Controller
 		return view('admin.add');
 	}
 
-	public function create(Request $request)
+	public function create(planRequest $request)
 	//formを受け取った後の処理 DB保存
 	{
-		$name = $request->name;
-		$description = $request->description;
+		$plan_name = $request->plan_name;
+		$prefecture = $request->prefecture;
+		$planner = $request->planner;
+		$comment = $request->comment;
+		$residence_history = $request->residence_history;
 		$price = $request->price;
-		$stock = $request->stock;
-		$validatedData = $request->validate([
-			'name' => 'required',
-			'description' => 'required',
-			'price' => 'required|numeric|min:0',//数値が0以上である
-			'stock' => 'required|numeric|min:0',//数値が0以上である
-		]);
-		$item = Item::create(compact('name', 'description', 'price', 'stock'));//インスタンスの作成→属性の代入→データの保を一気に行う
-		return redirect(route('admin.home'))->with('message', '商品を追加しました。');
+		$item = Item::create(compact('plan_name', 'prefecture', 'planner', 'comment', 'residence_history', 'price'));//インスタンスの作成→属性の代入→データの保を一気に行う
+		return redirect(route('admin.home'))->with('message', 'プランを追加しました。');
 	}
 
 	public function edit($id)
@@ -66,22 +63,19 @@ class ItemController extends Controller
 		return view('admin.edit', compact('item'));
 	}
 
-	public function update(Request $request, $id)//パラメータからid取得
+	public function update(planRequest $request, $id)//パラメータからid取得
 	//情報編集したものをDB保存
 	{
-		$validatedData = $request->validate([
-			'name' => 'required',
-			'description' => 'required',
-			'stock' => 'required|numeric|min:0',//数値が0以上である
-		]);
 		$item = Item::findOrFail($id);
-		$item->fill(['name' => $request->name]);
-		$item->fill(['description' => $request->description]);
-		$item->fill(['stock' => $request->stock]);
+		$item->fill(['plan_name' => $request->plan_name]);
+		$item->fill(['prefecture' => $request->prefecture]);
+		$item->fill(['planner' => $request->planner]);
+		$item->fill(['residence_history' => $request->residence_history]);
+		$item->fill(['price' => $request->price]);
 		$item->save();
 
 		$detail_route = route('admin.detail', ['id' => $id]);//編集した商品のrouteを取得
-		return redirect($detail_route)->with('message', '商品情報を編集しました。');
+		return redirect($detail_route)->with('message', 'プラン情報を編集しました。');
 	}
 }
 
