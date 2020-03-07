@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.top')
 
 @section('content')
-<div class="container">
-	<h1>Triplan</h1>
-	<p>
-	そこに住む人があなたにあった最高の旅行プランを考えます！
+<div class="top-container">
+	<h1 class="top-heading">Triplan</h1>
+	<p class="top-leading">
+	住む人だからこそ知る。<br>あなたにあった最高の旅行プランを考えます！
 	</p>
 </div>
 <div class="container">

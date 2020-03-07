@@ -70,6 +70,7 @@ class ItemController extends Controller
 		$item->fill(['plan_name' => $request->plan_name]);
 		$item->fill(['prefecture' => $request->prefecture]);
 		$item->fill(['planner' => $request->planner]);
+		$item->fill(['comment' => $request->comment]);
 		$item->fill(['residence_history' => $request->residence_history]);
 		$item->fill(['price' => $request->price]);
 		$item->save();
