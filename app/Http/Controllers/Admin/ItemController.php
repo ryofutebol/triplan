@@ -53,7 +53,7 @@ class ItemController extends Controller
 		$residence_history = $request->residence_history;
 		$stock = $request->stock;
 		$price = $request->price;
-		$item = Item::create(compact('plan_name', 'prefecture', 'planner', 'comment', 'residence_history', 'price'));//インスタンスの作成→属性の代入→データの保を一気に行う
+		$item = Item::create(compact('plan_name', 'prefecture', 'planner', 'comment', 'residence_history', 'stock', 'price'));//インスタンスの作成→属性の代入→データの保を一気に行う
 		return redirect(route('admin.home'))->with('message', 'プランを追加しました。');
 	}
 
