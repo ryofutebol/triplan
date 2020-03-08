@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -77,6 +78,11 @@
         @yield('content')
     </div>
 
+<footer>
+    <div class="footer-container">
+        <h3 class="footer-comment">Triplan</h3>
+    </div>
+</footer>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
