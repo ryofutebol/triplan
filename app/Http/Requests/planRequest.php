@@ -29,6 +29,7 @@ class planRequest extends FormRequest
             'planner' => 'required',
             'comment' => 'required',
             'residence_history' => 'required|numeric|min:0',
+            'stock' => 'required|numeric|min:1',
             'price' => 'required|numeric|min:0',
         ];
     }
