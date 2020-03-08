@@ -51,6 +51,7 @@ class ItemController extends Controller
 		$planner = $request->planner;
 		$comment = $request->comment;
 		$residence_history = $request->residence_history;
+		$stock = $request->stock;
 		$price = $request->price;
 		$item = Item::create(compact('plan_name', 'prefecture', 'planner', 'comment', 'residence_history', 'price'));//インスタンスの作成→属性の代入→データの保を一気に行う
 		return redirect(route('admin.home'))->with('message', 'プランを追加しました。');
@@ -72,6 +73,7 @@ class ItemController extends Controller
 		$item->fill(['planner' => $request->planner]);
 		$item->fill(['comment' => $request->comment]);
 		$item->fill(['residence_history' => $request->residence_history]);
+		$item->fill(['stock' => $request->stock]);
 		$item->fill(['price' => $request->price]);
 		$item->save();
 
