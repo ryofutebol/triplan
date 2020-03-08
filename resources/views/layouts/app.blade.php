@@ -78,11 +78,6 @@
         @yield('content')
     </div>
 
-<footer>
-    <div class="footer-container">
-        <h3 class="footer-comment">Triplan</h3>
-    </div>
-</footer>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
