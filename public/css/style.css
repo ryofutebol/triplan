@@ -16,6 +16,18 @@
     color: azure;
 }
 
+footer {
+  background-color: #fff;
+}
+
+.footer-container {
+  padding: 30px;
+}
+
+.footer-comment {
+  color: #636b6f;
+  text-align: center;
+}
 @media screen and (max-width:780px){
   .top-container {
       padding: 80px;
