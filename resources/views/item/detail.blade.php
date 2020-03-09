@@ -31,7 +31,7 @@
 								{{ Form::open(['route' => 'cart.add']) }}
 								{{ Form::selectRange('count', 1, $item->stock) }}
 								{{ Form::hidden('item_id', $item->id) }}
-								<a href="{{ route('cart.add') }}"><button>カートに追加</button></a>
+								<a href="{{ route('cart.add') }}" class="btn btn-primary mt-2">カートに追加</a>
 								{{ Form::close() }}
 							@else
 								<strong>在庫なし</strong>

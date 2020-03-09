@@ -25,7 +25,7 @@
 							<p>プランナー：{{ $cart->item->planner }}</p>
 							<p>価格：{{ number_format($cart->subtotal) }}円</p>
 							{{-- idを渡し対象レコードを判断 --}}
-							<a href="{{ route('cart.delete', ['id' => $cart->id]) }}"><button>削除</button></a>
+							<a href="{{ route('cart.delete', ['id' => $cart->id]) }}" class="btn btn-primary mt-2">削除</a>
 						</div>
 					</div>
 					@endforeach
