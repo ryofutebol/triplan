@@ -14,7 +14,7 @@ class AddColumnNameUsersTable2 extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name');
+            // $table->string('name');
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnNameUsersTable2 extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name');
+            // $table->string('name');
             //
         });
     }

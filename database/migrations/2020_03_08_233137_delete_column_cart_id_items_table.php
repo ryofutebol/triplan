@@ -14,7 +14,6 @@ class DeleteColumnCartIdItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('cart_id');
         });
     }
 
