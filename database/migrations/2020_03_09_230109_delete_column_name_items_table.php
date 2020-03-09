@@ -14,7 +14,7 @@ class DeleteColumnNameItemsTable extends Migration
     public function up()
     {
         Schema::table('name', function (Blueprint $table) {
-            $table->dropColumn('name');
+            // $table->dropColumn('name');
         });
     }
 
