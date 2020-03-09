@@ -24,7 +24,7 @@
 						<h5>{{ $item->prefecture }}</h5>
 						<h4>プランナー：{{ $item->planner }}</h4>
 						<p>{{ $item->comment }}</p>
-						<h4>在住歴：{{ $item->residence_history }}</h4>
+						<h4>在住歴：{{ $item->residence_history }}年</h4>
 						<h3>価格：¥{{ number_format($item->price) }}</h3>
 						@auth('user')
 							@if ($item->stock >= 1)
