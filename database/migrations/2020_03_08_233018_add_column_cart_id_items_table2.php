@@ -14,7 +14,7 @@ class AddColumnCartIdItemsTable2 extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->integer('cart_id');
+            // $table->integer('cart_id');
         });
     }
 
