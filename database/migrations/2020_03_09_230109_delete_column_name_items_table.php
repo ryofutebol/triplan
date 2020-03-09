@@ -13,8 +13,8 @@ class DeleteColumnNameItemsTable extends Migration
      */
     public function up()
     {
-        Schema::table('name', function (Blueprint $table) {
-            // $table->dropColumn('name');
+        Schema::table('items', function (Blueprint $table) {
+            $table->dropColumn('name');
         });
     }
 
@@ -25,7 +25,7 @@ class DeleteColumnNameItemsTable extends Migration
      */
     public function down()
     {
-        Schema::table('name', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             //
         });
     }
