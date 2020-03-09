@@ -29,7 +29,7 @@
 									¥{{ number_format($item->price) }}
 								</h3>
 								<a href="{{ route('item.detail', ['id' => $item->id]) }}" class="btn btn-primary mt-2">
-									More
+									もっと詳しく
 								</a>
 							</div>
 						</div>
