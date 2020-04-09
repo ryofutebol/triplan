@@ -42,34 +42,10 @@ class CartController extends Controller
 		return redirect()->route('cart.index')->with('d_message', '商品をカートから削除しました');
 	}
 
-	public function add(Request $request)
+	public function add(CartRequest $request)
 	{
-		$item = (new Cart)->findItem($request);
-		$user_id = Auth::id();//ログインユーザーID
-		$count = $request->count;//追加されたitemの個数
-		$subtotal = $item->price * $count;//小計
-		$valdatedData = $request->validate([
-			'count' => "integer|min:1|max:{$item->stock}",
-		], [
-			'count.max' => '在庫数以上は選択できません',
-		]);
-
-		$cart_item = Cart::firstOrCreate([
-			'user_id' => $user_id,
-			'item_id' => $item->id
-		], [
-			'count' => $count,
-			'subtotal' => $subtotal
-		]);
-		DB::transaction(function () use ($request, $cart_item, $item,  $subtotal) {
-			//追加された個数を在庫数から減少
-			$item->decrement('stock', $request->count);
-			if ($cart_item->wasRecentlyCreated == false) {//レコードが作成されたかのチェック
-				$cart_item->increment('count', $request->count);
-				$cart_item->increment('subtotal', $subtotal);
-			}
-		});
-		return redirect(route('cart.index'))->with('s_message', '商品をカートに追加しました');
+		$result = (new Cart)->add($request);
+		return $result;
 	}
 
 }

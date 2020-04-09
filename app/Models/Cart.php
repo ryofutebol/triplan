@@ -36,10 +36,35 @@ class Cart extends Model
 		$cart_user_id = Cart::where('id', $request->id)->first();
 		return $cart_user_id;
 	}
+
 	public function findItem($request)
 	{
 		$item_id = $request->item_id;//追加されたitemのID
 		$item = Item::where('id', $item_id)->first();
 		return $item;
+	}
+
+	public function add($request)
+	{
+		$item = (new Cart)->findItem($request);
+		$user_id = Auth::id();//ログインユーザーID
+		$count = $request->count;//追加されたitemの個数
+		$subtotal = $item->price * $count;//小計
+		$cart_item = Cart::firstOrCreate([
+			'user_id' => $user_id,
+			'item_id' => $item->id
+		], [
+			'count' => $count,
+			'subtotal' => $subtotal
+		]);
+		DB::transaction(function () use ($request, $cart_item, $item,  $subtotal) {
+			//追加された個数を在庫数から減少
+			$item->decrement('stock', $request->count);
+			if ($cart_item->wasRecentlyCreated == false) {//レコードが作成されたかのチェック
+				$cart_item->increment('count', $request->count);
+				$cart_item->increment('subtotal', $subtotal);
+			}
+		});
+		return redirect(route('cart.index'))->with('s_message', '商品をカートに追加しました');
 	}
 }
