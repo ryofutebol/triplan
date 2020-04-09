@@ -33,7 +33,7 @@ class cartRequest extends FormRequest
     public function messages()
     {
         return [
-            'count.max' => '在住以上の選択はできません',
+            'count.max' => '在庫数以上の選択はできません',
         ];
     }
 }
